@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeOpti ⚡</title>
+    <link rel="stylesheet" href="popup.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="logo">⚡</span>
+                    CodeOpti
+                </h1>
+                <div class="header-actions">
+                    <button id="settingsBtn" class="icon-btn" title="Settings">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                        </svg>
+                    </button>
+                    <button id="exportBtn" class="icon-btn" title="Export Report">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <select id="languageSelect">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="typescript">TypeScript</option>
+                <option value="go">Go</option>
+            </select>
+            <div class="interview-mode">
+                <label class="switch">
+                    <input type="checkbox" id="interviewMode">
+                    <span class="slider"></span>
+                </label>
+                <span>Interview Mode</span>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="editor">Code Editor</button>
+            <button class="tab-btn" data-tab="analysis">Analysis</button>
+            <button class="tab-btn" data-tab="optimize">Optimize</button>
+            <button class="tab-btn" data-tab="performance">Performance</button>
+            <button class="tab-btn" data-tab="quality">Quality</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Code Editor Tab -->
+            <div class="tab-panel active" data-panel="editor">
+                <div class="editor-section">
+                    <div class="editor-header">
+                        <span class="file-name">main.js</span>
+                        <div class="editor-actions">
+                            <button id="clearBtn" class="action-btn secondary">Clear</button>
+                            <button id="analyzeBtn" class="action-btn primary">Analyze Code</button>
+                        </div>
+                    </div>
+                    <div id="codeEditor" class="code-editor"></div>
+                </div>
+            </div>
+
+            <!-- Analysis Tab -->
+            <div class="tab-panel" data-panel="analysis">
+                <div class="analysis-section">
+                    <div class="complexity-cards">
+                        <div class="complexity-card">
+                            <div class="card-icon time-icon">⏱️</div>
+                            <div class="card-content">
+                                <h3>Time Complexity</h3>
+                                <div id="timeComplexity" class="complexity-result">-</div>
+                            </div>
+                        </div>
+                        <div class="complexity-card">
+                            <div class="card-icon space-icon">💾</div>
+                            <div class="card-content">
+                                <h3>Space Complexity</h3>
+                                <div id="spaceComplexity" class="complexity-result">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottlenecks-section">
+                        <h3>Code Analysis</h3>
+                        <div id="analysisDetails" class="analysis-details">
+                            Click "Analyze Code" to see detailed complexity analysis
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optimize Tab -->
+            <div class="tab-panel" data-panel="optimize">
+                <div class="optimize-section">
+                    <div class="optimize-header">
+                        <h3>AI Optimization Suggestions</h3>
+                        <button id="optimizeBtn" class="action-btn primary">Generate Optimized Code</button>
+                    </div>
+                    <div class="code-comparison">
+                        <div class="comparison-tabs">
+                            <button class="comparison-tab active" data-comparison="original">Original</button>
+                            <button class="comparison-tab" data-comparison="optimized">Optimized</button>
+                            <button class="comparison-tab" data-comparison="diff">Changes</button>
+                        </div>
+                        <div id="optimizedCodeEditor" class="optimized-code-editor"></div>
+                        <div id="optimizationSuggestions" class="optimization-suggestions">
+                            Click "Generate Optimized Code" to see AI suggestions
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Tab -->
+            <div class="tab-panel" data-panel="performance">
+                <div class="performance-section">
+                    <div class="chart-container">
+                        <h3>Performance Comparison</h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-card">
+                            <h4>Best Case</h4>
+                            <div id="bestCase" class="metric-value">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>Average Case</h4>
+                            <div id="averageCase" class="metric-value">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>Worst Case</h4>
+                            <div id="worstCase" class="metric-value">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quality Tab -->
+            <div class="tab-panel" data-panel="quality">
+                <div class="quality-section">
+                    <div class="quality-score">
+                        <div class="score-circle">
+                            <div id="qualityScore" class="score-value">-</div>
+                            <div class="score-label">Quality Score</div>
+                        </div>
+                    </div>
+                    <div class="quality-recommendations">
+                        <h3>Code Quality Recommendations</h3>
+                        <div id="qualityFeedback" class="quality-feedback">
+                            Analyze your code to receive quality recommendations
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>Analyzing code...</p>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button id="closeSettings" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label>Theme</label>
+                        <select id="themeSelect">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>API Key</label>
+                        <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key">
+                        <small>Required for AI analysis and optimization</small>
+                    </div>
+                    <div class="setting-group">
+                        <label>Export Format</label>
+                        <select id="exportFormat">
+                            <option value="markdown">Markdown</option>
+                            <option value="pdf">PDF</option>
+                            <option value="json">JSON</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveSettings" class="action-btn primary">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="monaco-loader.js"></script>
+    <script src="analyzer.js"></script>
+    <script src="optimizer.js"></script>
+    <script src="exporter.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
